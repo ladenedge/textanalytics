@@ -1,74 +1,95 @@
-//Text Analytics API Proxy
-//Handles http communiation with Text analytics API
 var request = require('request');
+
+
+/**
+ * A callback to handle both successful and failed requests. 
+ * @callback TextAnalytics~callback
+ * @param {Error} error An Error object containing information about a failure, or null if the call succeeded.
+ * @param {Object} resp An object created from the body of the successful response.
+ */
+
+/**
+ * Module for the Text Analytics analysis that handles http communication with Text Analytics API
+ */
 module.exports = class TexAnalytics {
+
+    /**
+     * Constructs a TextAnalytics client
+     * @param {Object} config Configuration for the module
+     * @param {string} config.endpoint Full endpoint for the Text Analytics API
+     * @param {string} config.apikey Full api key for the Text Analytics API
+     */
     constructor(config) {
-        //First do error checking on the config object
-        //TA20-TA28
-        //TA20,TA21
+
         if (!config || config === null) {
             throw new Error('Null or undefined configuration data');
         }
-        //TA22
+
         if (typeof config !== 'object') {
             throw new Error('Configuration data must be a javascript object');
         }
-        //TA23
+
         if (!config.hasOwnProperty('endpoint')) {
             throw new Error('Configuration missing "endpoint" property');
         }
-        //TA24
+
         if (!config.hasOwnProperty('apikey')) {
             throw new Error('Configuration missing "apikey" property');
         }
-        //TA25, TA26
-        config.endpoint = config.endpoint.trim();
-        if (config.endpoint === null || config.endpoint ==='') {
-            throw new Error('Endpoint property is null or empty');
+        
+        if (config.endpoint === null ) {
+            throw new Error('Endpoint property is null');
         }
-        //TA27, TA28
-        config.apikey = config.apikey.trim();
+        
+        config.endpoint = config.endpoint.trim();
+        if (config.endpoint === '') {
+            throw new Error('Endpoint property is only whitespace');
+        }
+        
         if (config.apikey === null || config.apikey === '') {
             throw new Error('Apikey property is null or empty');
         }
+        
+        config.apikey = config.apikey.trim();
+        if (config.apikey === '') {
+            throw new Error('Apikey property is only whitespace');
+        }
 
 
-
-        //Then use config object to contact Text Analytics API
-        //TA29-TA30
         this.endpoint = config.endpoint;
         this.apikey = config.apikey;
     }
 
 
 
-
-
-    //main functionality of the TAAP component, analyze function
+    /**
+     * 
+     * @param {string} text Message that is sent to the Text Analytics API
+     * @param {function} callback 
+     */
     analyze(text, callback) {
-        //First error checking
-        //TA3-TA9
-        //TA3, TA4
+
         if (!text || text === null) {
             throw new Error('Null or undefined message');
         }
-        //TA5
+        
         if (typeof text !== 'string') {
             throw new Error('Message must be a string');
         }
-        //TA6
+        
+        text = text.trim();
+        if (text === '') {
+            throw new Error('Message made entirely of whitespace');
+        }
 
-        //TA7, TA8
         if (!callback || callback === null) {
             throw new Error('Null or undefined callback');
         }
-        //TA9
+        
         if (typeof callback !== 'function') {
             throw new Error('Callback must be a function');
         }
 
-        //Then send string to TA-API for analysis
-        //TA10
         var postData =
             {
                 "documents":
@@ -79,20 +100,17 @@ module.exports = class TexAnalytics {
                 }]
             };
         var options = {
-            method: 'POST',
             headers: {
                 "Ocp-Apim-Subscription-Key": this.apikey,
-                "Content-Type": "application / json",
-                "Accept": "application / json"
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             },
             json: postData
         }
 
-        //Use request module to make HTTP calls
-        //TA11
-        request(this.endpoint, options, (error, resp, body) => {
-            //Callback the results if there are results or an error if there is one
-            //TA12-TA16
+
+        request.post(this.endpoint, options, (error, resp, body) => {
+
             if (error)
                 return callback(error);
             if (resp.statusCode !== 200)
