@@ -34,7 +34,8 @@ describe('constructor', function () {
     it('should throw on null endpoint property', function () {
         assert.throws(
             () => {
-                var config = {endpoint: null,
+                var config = {
+                    endpoint: null,
                     apikey: 'foo'
                 };
                 new TextAnalytic(config);
@@ -44,7 +45,8 @@ describe('constructor', function () {
     it('should throw on null apikey property', function () {
         assert.throws(
             () => {
-                var config = {endpoint:'foo',
+                var config = {
+                    endpoint: 'foo',
                     apikey: null
                 };
                 new TextAnalytic(config);
@@ -55,7 +57,7 @@ describe('constructor', function () {
 
 describe('analyze', function () {
     var config = {
-        endpoint: ' https://westus.api.cognitive.microsoft.com/text/analytics/v2.0 ',
+        endpoint: ' https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment ',
         apikey: ' a887bd712a8c4aed99e1aa09732ecb74 ',
         verbose: false
     };
@@ -87,7 +89,7 @@ describe('analyze', function () {
     it('should throw on null callback', function () {
         assert.throws(() => {
             var textanalytics = new TextAnalytic(config);
-            textanalytics.analyze('foo',null);
+            textanalytics.analyze('foo', null);
         }, Error);
     });
     it('should throw when callback is not a function', function () {
@@ -96,5 +98,14 @@ describe('analyze', function () {
             textanalytics.analyze('foo', 1);
         }, Error);
     });
+
+
+    var textanalytics = new TextAnalytic(config);
+    textanalytics.analyze('This is not a real message', (err, rsp) => {
+        if (err)
+            return console.log(err);
+        console.log(rsp);
+    });
+
 
 })

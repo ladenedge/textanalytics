@@ -79,9 +79,9 @@ module.exports = class TexAnalytics {
         var options = {
             method: 'POST',
             headers: {
-                "Ocp-Apim-Subscription-Key": apikey,
-                "Content-Type": application / json,
-                "Accept": application / json
+                "Ocp-Apim-Subscription-Key": this.apikey,
+                "Content-Type": "application / json",
+                "Accept": "application / json"
             },
             json: postData
         }
@@ -95,7 +95,9 @@ module.exports = class TexAnalytics {
                 return callback(error);
             if (resp.statusCode !== 200)
                 return callback(new Error('Protocol Error'));
-            callback(null, JSON.parse(body));
+            if (typeof body !== 'object')
+                return callback(new Error('Body must be an object'));
+            callback(null, body);
         });
 
     }
