@@ -4,10 +4,13 @@
   "description": "A Node module to handle the client side of Microsoft's Text Analytics API.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./test/tests.js"
   },
   "license": "MIT",
   "dependencies": {
     "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.0"
   }
 }

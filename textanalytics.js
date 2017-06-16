@@ -1,9 +1,7 @@
 //Text Analytics API Proxy
 //Handles http communiation with Text analytics API
 var request = require('request');
-class TexAnalytics {
-
-
+module.exports = class TexAnalytics {
     constructor(config) {
         //First do error checking on the config object
         //TA20-TA28
@@ -39,66 +37,68 @@ class TexAnalytics {
         this.endpoint = config.endpoint;
         this.apikey = config.apikey;
     }
+
+
+
+
+
+    //main functionality of the TAAP component, analyze function
+    analyze(text, callback) {
+        //First error checking
+        //TA3-TA9
+        //TA3, TA4
+        if (!text || text === null) {
+            throw new Error('Null or undefined message');
+        }
+        //TA5
+        if (typeof text !== 'string') {
+            throw new Error('Message must be a string');
+        }
+        //TA6
+
+        //TA7, TA8
+        if (!callback || callback === null) {
+            throw new Error('Null or undefined callback');
+        }
+        //TA9
+        if (typeof callback !== 'function') {
+            throw new Error('Callback must be a function');
+        }
+
+        //Then send string to TA-API for analysis
+        //TA10
+        var postData =
+            {
+                "documents":
+                [{
+                    "language": "en",
+                    "id": "1",
+                    "text": text
+                }]
+            };
+        var options = {
+            method: 'POST',
+            headers: {
+                "Ocp-Apim-Subscription-Key": apikey,
+                "Content-Type": application / json,
+                "Accept": application / json
+            },
+            json: postData
+        }
+
+        //Use request module to make HTTP calls
+        //TA11
+        request(this.endpoint, options, (error, resp, body) => {
+            //Callback the results if there are results or an error if there is one
+            //TA12-TA16
+            if (error)
+                return callback(error);
+            if (resp.statusCode !== 200)
+                return callback(new Error('Protocol Error'));
+            callback(null, JSON.parse(body));
+        });
+
+    }
 }
 
-//main functionality of the TAAP component, analyze function
-analyze(text, callback) {
-    //First error checking
-    //TA3-TA9
-    //TA3, TA4
-    if (!text || text === null) {
-        throw new Error('Null or undefined message');
-    }
-    //TA5
-    if (typeof text !== 'string') {
-        throw new Error('Message must be a string');
-    }
-    //TA6
 
-    //TA7, TA8
-    if (!callback || callback === null) {
-        throw new Error('Null or undefined callback');
-    }
-    //TA9
-    if (typeof callback !== 'function') {
-        throw new Error('Callback must be a function');
-    }
-
-    //Then send string to TA-API for analysis
-    //TA10
-    var postData =
-        {
-            "documents":
-            [{
-                "language": "en",
-                "id": "1",
-                "text": text
-            }]
-        };
-    var options = {
-        method: 'POST',
-        headers: {
-            "Ocp-Apim-Subscription-Key": apikey,
-            "Content-Type": application / json,
-            "Accept": application / json
-        },
-        json: postData
-    }
-
-    //Use request module to make HTTP calls
-    //TA11
-    request(this.endpoint, options, (error, resp, body) => {
-        //Callback the results if there are results or an error if there is one
-        //TA12-TA16
-        if (error)
-            return callback(error);
-        if (resp.statusCode !== 200)
-            return callback(new Error('Protocol Error'));
-        callback(null, JSON.parse(body));
-    });
-
-}
-}
-
-
-module.exports = TextAnalytics;
