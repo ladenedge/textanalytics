@@ -42,12 +42,34 @@ describe('constructor', function () {
             }, Error);
     });
 
+    it('should throw on whitespace endpoint property', function () {
+        assert.throws(
+            () => {
+                var config = {
+                    endpoint: '    ',
+                    apikey: 'foo'
+                };
+                new TextAnalytic(config);
+            }, Error);
+    });
+
     it('should throw on null apikey property', function () {
         assert.throws(
             () => {
                 var config = {
                     endpoint: 'foo',
                     apikey: null
+                };
+                new TextAnalytic(config);
+            }, Error);
+    });
+
+    it('should throw on whitespace apikey property', function () {
+        assert.throws(
+            () => {
+                var config = {
+                    endpoint: 'foo',
+                    apikey: '   '
                 };
                 new TextAnalytic(config);
             }, Error);
@@ -100,12 +122,7 @@ describe('analyze', function () {
     });
 
 
-    var textanalytics = new TextAnalytic(config);
-    textanalytics.analyze('This is not a real message', (err, rsp) => {
-        if (err)
-            return console.log(err);
-        console.log(rsp);
-    });
+    
 
 
 })

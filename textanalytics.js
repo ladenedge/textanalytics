@@ -22,11 +22,13 @@ module.exports = class TexAnalytics {
             throw new Error('Configuration missing "apikey" property');
         }
         //TA25, TA26
-        if (config.endpoint === null) {
+        config.endpoint = config.endpoint.trim();
+        if (config.endpoint === null || config.endpoint ==='') {
             throw new Error('Endpoint property is null or empty');
         }
         //TA27, TA28
-        if (config.apikey === null) {
+        config.apikey = config.apikey.trim();
+        if (config.apikey === null || config.apikey === '') {
             throw new Error('Apikey property is null or empty');
         }
 
