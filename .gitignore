@@ -46,6 +46,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-node_modules/
-.vs/
+node_modules
+.vs
 coverage/
+.vs/textanalytics/v15/.suo
+.vs/slnx.sqlite

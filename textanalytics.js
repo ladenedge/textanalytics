@@ -102,8 +102,6 @@ module.exports = class TexAnalytics {
         var options = {
             headers: {
                 "Ocp-Apim-Subscription-Key": this.apikey,
-                "Content-Type": "application/json",
-                "Accept": "application/json"
             },
             json: postData
         }

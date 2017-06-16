@@ -21,54 +21,63 @@ describe('constructor', function () {
             () => {                
                 new TextAnalytic(config);
             }, Error);
-    });
-    config = { endpoint: 'foo' };
+    });   
     it('should throw on missing apikey property', function () {
+        config = { endpoint: 'foo' };
         assert.throws(
             () => {
                 new TextAnalytic(config);
             }, Error);
     });
-    config = {
-        endpoint: null,
-        apikey: 'foo'
-    };
     it('should throw on null endpoint property', function () {
+        config = {
+            endpoint: null,
+            apikey: 'foo'
+        };
         assert.throws(
             () => {
                 new TextAnalytic(config);
             }, Error);
     });
-    config = {
-        endpoint: '    ',
-        apikey: 'foo'
-    };
     it('should throw on whitespace endpoint property', function () {
-        assert.throws(
+        config = {
+            endpoint: '    ',
+            apikey: 'foo'
+        };
+        assert.throws(            
             () => {
                 new TextAnalytic(config);
             }, Error);
     });
-    config = {
-        endpoint: 'foo',
-        apikey: null
-    };
     it('should throw on null apikey property', function () {
+        config = {
+            endpoint: 'foo',
+            apikey: null
+        };
         assert.throws(
             () => {
                 new TextAnalytic(config);
             }, Error);
     });
-    config = {
-        endpoint: 'foo',
-        apikey: '   '
-    };
     it('should throw on whitespace apikey property', function () {
+        config = {
+            endpoint: 'foo',
+            apikey: '   '
+        };
         assert.throws(
             () => {
                 new TextAnalytic(config);
             }, Error);
     });
+
+    it('should set the state', function () {
+        var config = {
+            endpoint: 'foo',
+            apikey: 'bar'
+        };
+        assert.equal(new TextAnalytic(config).endpoint, 'foo');
+    });
+
 });
 
 
@@ -125,8 +134,48 @@ describe('analyze', function () {
         }, Error);
     });
 
+    it('should include error argument on error', function (done) {
+        var err = new Error('Bad request');
+        this.post.callsArgWith(2, err);
+        textanalytics.analyze("Arbitrary message", (error, resp) => {
+            assert.equal(error.message, 'Bad request');
+            done();
+        });
+    });  
 
-    
+    it('should throw when the Text Analytics API does not return a 200 OK status code', function (done) {
+        var rsp = { statusCode: 400 };
+        this.post.callsArgWith(2, null, rsp);
+        textanalytics.analyze("Arbitrary message", (error, resp) => {
+            assert.equal(error.message, 'Protocol Error');
+            done();
+        });
+    });
 
+    it('should throw when body is not an object', function (done) {
+        var body = 1;
+        this.post.callsArgWith(2, null, { statusCode: 200 }, body);
+        textanalytics.analyze("Arbitrary message", (error, resp) => {
+            assert.equal(error.message, 'Body must be an object');
+            done();
+        });
+    });
 
+    it('should return a null error in the callback when no error occurs', function (done) {
+        var body = { output: 'foo' };
+        this.post.callsArgWith(2, null, { statusCode: 200 }, body);
+        textanalytics.analyze("Arbitrary message", (error, resp) => {
+            assert.equal(error, null);
+            done();
+        });
+    });
+
+    it('should return the content of the API response in the second argument of the callback when no error occurs', function (done) {
+        var body = { output: 'foo' };
+        this.post.callsArgWith(2, null, { statusCode: 200 }, body);
+        textanalytics.analyze("Arbitrary message", (error, resp) => {
+            assert.equal(resp, body);
+            done();
+        });
+    });
 })
