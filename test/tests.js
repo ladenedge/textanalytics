@@ -18,10 +18,10 @@ describe('constructor', function () {
     var config = { apikey: 'foo' };
     it('should throw on missing endpoint property', function () {
         assert.throws(
-            () => {                
+            () => {
                 new TextAnalytic(config);
             }, Error);
-    });   
+    });
     it('should throw on missing apikey property', function () {
         config = { endpoint: 'foo' };
         assert.throws(
@@ -44,7 +44,7 @@ describe('constructor', function () {
             endpoint: '    ',
             apikey: 'foo'
         };
-        assert.throws(            
+        assert.throws(
             () => {
                 new TextAnalytic(config);
             }, Error);
@@ -113,7 +113,7 @@ describe('analyze', function () {
         }, Error);
     });
     it('should throw when text is all whitespace'), function () {
-        assert.throws(() => {           
+        assert.throws(() => {
             textanalytics.analyze('   ', (err, rsp) => { });
         }, Error);
     }
@@ -141,7 +141,7 @@ describe('analyze', function () {
             assert.equal(error.message, 'Bad request');
             done();
         });
-    });  
+    });
 
     it('should throw when the Text Analytics API does not return a 200 OK status code', function (done) {
         var rsp = { statusCode: 400 };

@@ -36,20 +36,20 @@ module.exports = class TexAnalytics {
         if (!config.hasOwnProperty('apikey')) {
             throw new Error('Configuration missing "apikey" property');
         }
-        
-        if (config.endpoint === null ) {
+
+        if (config.endpoint === null) {
             throw new Error('Endpoint property is null');
         }
-        
+
         config.endpoint = config.endpoint.trim();
         if (config.endpoint === '') {
             throw new Error('Endpoint property is only whitespace');
         }
-        
+
         if (config.apikey === null || config.apikey === '') {
             throw new Error('Apikey property is null or empty');
         }
-        
+
         config.apikey = config.apikey.trim();
         if (config.apikey === '') {
             throw new Error('Apikey property is only whitespace');
@@ -72,11 +72,11 @@ module.exports = class TexAnalytics {
         if (!text || text === null) {
             throw new Error('Null or undefined message');
         }
-        
+
         if (typeof text !== 'string') {
             throw new Error('Message must be a string');
         }
-        
+
         text = text.trim();
         if (text === '') {
             throw new Error('Message made entirely of whitespace');
@@ -85,7 +85,7 @@ module.exports = class TexAnalytics {
         if (!callback || callback === null) {
             throw new Error('Null or undefined callback');
         }
-        
+
         if (typeof callback !== 'function') {
             throw new Error('Callback must be a function');
         }
