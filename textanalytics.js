@@ -77,7 +77,8 @@ class TextAnalytics {
             throw new Error('Message must be a string');
         }
 
-        if (text.trim() === '') {
+        text = text.trim();
+        if (text === '') {
             throw new Error('Message made entirely of whitespace');
         }
 
@@ -105,8 +106,8 @@ class TextAnalytics {
             json: postData
         }
 
-        var analyticOutput = {sentiment:'',keyPhrases:'',languages:''};
-        request.post(this.endpoint+'/languages', options, (error, resp, body) => {
+
+        request.post(this.endpoint, options, (error, resp, body) => {
 
             if (error)
                 return callback(error);
@@ -114,33 +115,8 @@ class TextAnalytics {
                 return callback(new Error('Protocol Error'));
             if (typeof body !== 'object')
                 return callback(new Error('Body must be an object'));
-            analyticOutput.languages = body;
+            callback(null, body);
         });
-
-        request.post(this.endpoint + '/keyPhrases', options, (error, resp, body) => {
-
-            if (error)
-                return callback(error);
-            if (resp.statusCode !== 200)
-                return callback(new Error('Protocol Error'));
-            if (typeof body !== 'object')
-                return callback(new Error('Body must be an object'));
-            analyticOutput.keyPhrases = body;
-        });
-
-        request.post(this.endpoint + '/sentiment', options, (error, resp, body) => {
-
-            if (error)
-                return callback(error);
-            if (resp.statusCode !== 200)
-                return callback(new Error('Protocol Error'));
-            if (typeof body !== 'object')
-                return callback(new Error('Body must be an object'));
-            analyticOutput.sentiment = body;
-            callback(null, [analyticOutput.sentiment.documents, analyticOutput.languages.documents, analyticOutput.keyPhrases.documents]);
-        });
-
-        
 
     }
 }
