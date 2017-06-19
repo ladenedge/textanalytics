@@ -9,7 +9,7 @@
     "local-test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
     "version-patch": "npm version patch",
     "push-tags": "git push --tags",
-    "doc": "jsdoc index.js && jsdoc2md index.js > out\\wiki.md"
+    "doc": "jsdoc textanalytics.js && jsdoc2md textanalytics.js > out\\wiki.md"
   },
   "license": "MIT",
   "dependencies": {

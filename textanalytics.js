@@ -11,7 +11,7 @@ var request = require('request');
 /**
  * Module for the Text Analytics analysis that handles http communication with Text Analytics API
  */
-module.exports = class TexAnalytics {
+class TextAnalytics {
 
     /**
      * Constructs a TextAnalytics client
@@ -65,7 +65,7 @@ module.exports = class TexAnalytics {
     /**
      * 
      * @param {string} text Message that is sent to the Text Analytics API
-     * @param {function} callback 
+     * @param {function} callback A response handler to be called when the function completes.
      */
     analyze(text, callback) {
 
@@ -121,4 +121,4 @@ module.exports = class TexAnalytics {
     }
 }
 
-
+module.exports = TextAnalytics;
