@@ -112,12 +112,11 @@ describe('analyze', function () {
             textanalytics.analyze(1, (err, rsp) => { });
         }, Error);
     });
-    it('should throw when text is all whitespace'), function () {
+    it('should throw when text is all whitespace', function () {
         assert.throws(() => {
             textanalytics.analyze('   ', (err, rsp) => { });
         }, Error);
-    }
-
+    });
     it('should throw on undefined callback', function () {
         assert.throws(() => {
             textanalytics.analyze('foo');
