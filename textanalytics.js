@@ -63,7 +63,7 @@ class TextAnalytics {
 
 
     /**
-     * 
+     * Communicates with the Text Analytics API and calls the callback function with the results
      * @param {string} text Message that is sent to the Text Analytics API
      * @param {function} callback A response handler to be called when the function completes.
      */
