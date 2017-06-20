@@ -146,17 +146,22 @@ describe('analyze', function () {
     });
 
     it('should return the content of the API response in the second argument of the callback when no error occurs', function (done) {
-        var body = { output: 'foo' };
-        this.post.callsArgWith(2, null, { statusCode: 200 }, body);
+        var body = [{ output: 'foo' }, { output: 'bar' }, { output: 'foobar' }];
+        var expected = { sentiment: body[0], keyPhrases: body[1], languages: body[2] };
+        this.post.onFirstCall().callsArgWith(2, null, { statusCode: 200 }, body[0]);
+        this.post.onSecondCall().callsArgWith(2, null, { statusCode: 200 }, body[1]);
+        this.post.onThirdCall().callsArgWith(2, null, { statusCode: 200 }, body[2]);
         textanalytics.analyze('Arbitrary message', (error, resp) => {
-            assert.equal(resp, body);
+            assert.equal(resp.sentiment, expected.sentiment);
+            assert.equal(resp.keyPhrases, expected.keyPhrases);
+            assert.equal(resp.languages, expected.languages);
             done();
         });
     });
 
     it('should pass the configured url to request', function () {
         textanalytics.analyze('Arbitrary message', (error, resp) => { });
-        assert.equal(this.post.firstCall.args[0], 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0')
+        assert.equal(this.post.firstCall.args[0], 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment')
 
     });
 

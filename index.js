@@ -1,5 +1,5 @@
 var request = require('request');
-
+var async = require('async');
 
 /**
  * A callback to handle both successful and failed requests. 
@@ -93,19 +93,43 @@ class TextAnalytics {
             json: postData
         }
 
-
-        request.post(this.endpoint, options, (error, resp, body) => {
+        var results = multiRequest(this.endpoint, options, (error, body) => {
 
             if (error)
                 return callback(error);
-            if (resp.statusCode !== 200)
-                return callback(new Error('Protocol Error'));
-            if (typeof body !== 'object')
-                return callback(new Error('Body must be an object'));
             callback(null, body);
         });
+       
 
     }
 }
+
+var multiRequest = function (endpoint, options, callback) {
+    var endpoints =
+        ['sentiment',
+        'keyPhrases',
+            'languages'];
+    async.map(endpoints, (end, finished) => {
+        request.post(`${endpoint}/${end}`, options, (error, resp, body) => {
+
+            if (error)
+                return finished(error);
+            if (resp.statusCode !== 200)
+                return finished(new Error(`Protocol Error`));
+            if (typeof body !== 'object')
+                return finished(new Error('Body must be an object'));
+            finished(null, body);
+        });
+    }, (err, results) => {
+        if (err)
+            return callback(err);
+        results = results.reduce((prev, cur, i) => {
+            prev[endpoints[i]] = results[i];
+            return prev;
+        }, {});
+        callback(null, results);
+    });
+
+};
 
 module.exports = TextAnalytics;
