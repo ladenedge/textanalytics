@@ -1,4 +1,4 @@
-var TextAnalytic = require('../textanalytics');
+var TextAnalytic = require('../index');
 var assert = require('assert');
 var sinon = require('sinon');
 var request = require('request');
@@ -50,6 +50,9 @@ describe('constructor', function () {
     });
 
     it('should set the proper endpoint', function () {
+        var config = {
+            apikey: 'bar'
+        };
         assert.equal(new TextAnalytic(config).endpoint, 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0');
     });
 
