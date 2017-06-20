@@ -28,8 +28,7 @@ object containing information about the failure, or **null** if the call succeed
 
     var TextAnalytics = require('textanalytics');
     var config = {
-      endpoint : 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0',
-      apikey : '(Example key)',
+      apikey : '(Example key)'
     };
 
     var textanalytics = new TextAnalytics(config);

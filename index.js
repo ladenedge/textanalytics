@@ -16,7 +16,6 @@ class TextAnalytics {
     /**
      * Constructs a TextAnalytics client
      * @param {Object} config Configuration for the module
-     * @param {string} config.endpoint Full endpoint for the Text Analytics API
      * @param {string} config.apikey Full api key for the Text Analytics API
      */
     constructor(config) {
@@ -29,21 +28,9 @@ class TextAnalytics {
             throw new Error('Configuration data must be a javascript object');
         }
 
-        if (!config.hasOwnProperty('endpoint')) {
-            throw new Error('Configuration missing "endpoint" property');
-        }
 
         if (!config.hasOwnProperty('apikey')) {
             throw new Error('Configuration missing "apikey" property');
-        }
-
-        if (config.endpoint === null) {
-            throw new Error('Endpoint property is null');
-        }
-
-        config.endpoint = config.endpoint.trim();
-        if (config.endpoint === '') {
-            throw new Error('Endpoint property is only whitespace');
         }
 
         if (config.apikey === null || config.apikey === '') {
@@ -56,7 +43,7 @@ class TextAnalytics {
         }
 
 
-        this.endpoint = config.endpoint;
+        this.endpoint = 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0';
         this.apikey = config.apikey;
     }
 

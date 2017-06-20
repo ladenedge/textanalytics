@@ -15,35 +15,9 @@ describe('constructor', function () {
     it('should throw when config is not an object', function () {
         assert.throws(() => new TextAnalytic(1), Error);
     });
-    var config = { apikey: 'foo' };
-    it('should throw on missing endpoint property', function () {
-        assert.throws(
-            () => {
-                new TextAnalytic(config);
-            }, Error);
-    });
+    var config = { };
+
     it('should throw on missing apikey property', function () {
-        config = { endpoint: 'foo' };
-        assert.throws(
-            () => {
-                new TextAnalytic(config);
-            }, Error);
-    });
-    it('should throw on null endpoint property', function () {
-        config = {
-            endpoint: null,
-            apikey: 'foo'
-        };
-        assert.throws(
-            () => {
-                new TextAnalytic(config);
-            }, Error);
-    });
-    it('should throw on whitespace endpoint property', function () {
-        config = {
-            endpoint: '    ',
-            apikey: 'foo'
-        };
         assert.throws(
             () => {
                 new TextAnalytic(config);
@@ -51,7 +25,6 @@ describe('constructor', function () {
     });
     it('should throw on null apikey property', function () {
         config = {
-            endpoint: 'foo',
             apikey: null
         };
         assert.throws(
@@ -61,7 +34,6 @@ describe('constructor', function () {
     });
     it('should throw on whitespace apikey property', function () {
         config = {
-            endpoint: 'foo',
             apikey: '   '
         };
         assert.throws(
@@ -72,10 +44,13 @@ describe('constructor', function () {
 
     it('should set the state', function () {
         var config = {
-            endpoint: 'foo',
             apikey: 'bar'
         };
-        assert.equal(new TextAnalytic(config).endpoint, 'foo');
+        assert.equal(new TextAnalytic(config).apikey, 'bar');
+    });
+
+    it('should set the proper endpoint', function () {
+        assert.equal(new TextAnalytic(config).endpoint, 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0');
     });
 
 });
@@ -83,9 +58,7 @@ describe('constructor', function () {
 
 describe('analyze', function () {
     var config = {
-        endpoint: 'foo',
         apikey: 'bar',
-        verbose: false
     };
     var textanalytics = new TextAnalytic(config);
     beforeEach(function () {
@@ -180,7 +153,7 @@ describe('analyze', function () {
 
     it('should pass the configured url to request', function () {
         textanalytics.analyze('Arbitrary message', (error, resp) => { });
-        assert.equal(this.post.firstCall.args[0], 'foo')
+        assert.equal(this.post.firstCall.args[0], 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0')
 
     });
 
