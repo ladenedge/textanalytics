@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "A Node module to handle the client side of Microsoft's Text Analytics API.",
   "main": "index.js",
+    "author": {
+    "name" : "Jackson Adler",
+    "email" : "jadler@contactsolutions.com"
+  },
+  "contributors": [{
+    "name" : "Jay Miller",
+    "email" : "jmiller@contactsolutions.com"
+  }],
   "scripts": {
     "deploy-prod": "npm run local-test && npm run version-patch && npm run push-tags",
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
