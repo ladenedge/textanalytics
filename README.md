@@ -1,7 +1,6 @@
 # Text Analytics API Proxy Module
 
-
-This is a Node module to handle the client side of the Text Analytics API
+This is a Node module to handle the client side of the Text Analytics API.
 
 ## Installation
 
