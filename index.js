@@ -4,8 +4,8 @@ var async = require('async');
 /**
  * A callback to handle both successful and failed requests. 
  * @callback TextAnalytics~callback
- * @param {Error} error An Error object containing information about a failure, or null if the call succeeded.
- * @param {Object} resp An object created from the body of the successful response.
+ * @param {Error} err An Error object containing information about a failure, or null if the call succeeded.
+ * @param {Object} rsp An object created from the body of the successful response.
  */
 
 /**
