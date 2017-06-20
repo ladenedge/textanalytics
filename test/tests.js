@@ -136,7 +136,7 @@ describe('analyze', function () {
     it('should include error argument on error', function (done) {
         var err = new Error('Bad request');
         this.post.callsArgWith(2, err);
-        textanalytics.analyze("Arbitrary message", (error, resp) => {
+        textanalytics.analyze('Arbitrary message', (error, resp) => {
             assert.equal(error.message, 'Bad request');
             done();
         });
@@ -145,7 +145,7 @@ describe('analyze', function () {
     it('should throw when the Text Analytics API does not return a 200 OK status code', function (done) {
         var rsp = { statusCode: 400 };
         this.post.callsArgWith(2, null, rsp);
-        textanalytics.analyze("Arbitrary message", (error, resp) => {
+        textanalytics.analyze('Arbitrary message', (error, resp) => {
             assert.equal(error.message, 'Protocol Error');
             done();
         });
@@ -154,7 +154,7 @@ describe('analyze', function () {
     it('should throw when body is not an object', function (done) {
         var body = 1;
         this.post.callsArgWith(2, null, { statusCode: 200 }, body);
-        textanalytics.analyze("Arbitrary message", (error, resp) => {
+        textanalytics.analyze('Arbitrary message', (error, resp) => {
             assert.equal(error.message, 'Body must be an object');
             done();
         });
@@ -163,7 +163,7 @@ describe('analyze', function () {
     it('should return a null error in the callback when no error occurs', function (done) {
         var body = { output: 'foo' };
         this.post.callsArgWith(2, null, { statusCode: 200 }, body);
-        textanalytics.analyze("Arbitrary message", (error, resp) => {
+        textanalytics.analyze('Arbitrary message', (error, resp) => {
             assert.equal(error, null);
             done();
         });
@@ -172,9 +172,36 @@ describe('analyze', function () {
     it('should return the content of the API response in the second argument of the callback when no error occurs', function (done) {
         var body = { output: 'foo' };
         this.post.callsArgWith(2, null, { statusCode: 200 }, body);
-        textanalytics.analyze("Arbitrary message", (error, resp) => {
+        textanalytics.analyze('Arbitrary message', (error, resp) => {
             assert.equal(resp, body);
             done();
         });
     });
+
+    it('should pass the configured url to request', function () {
+        textanalytics.analyze('Arbitrary message', (error, resp) => { });
+        assert.equal(this.post.firstCall.args[0], 'foo')
+
+    });
+
+    it('should pass the input string as JSON', function () {
+        var sendText = 'Arbitrary message';
+        textanalytics.analyze(sendText, (error, resp) => { });
+        assert.equal(this.post.firstCall.args[1].json.documents[0].text, sendText);
+    });
+
+    it('should set API key in headers', function () {
+        textanalytics.analyze('Arbitrary message', (error, resp) => { });
+        assert.equal(this.post.firstCall.args[1].headers["Ocp-Apim-Subscription-Key"], 'bar');
+    });
+
+    it('should send language of input text', function () {
+        textanalytics.analyze('Arbitrary message', (error, resp) => { });
+        assert.equal(this.post.firstCall.args[1].json.documents[0].language, 'en');
+    });
+
+    it('should send ID of input text', function () {
+        textanalytics.analyze('Arbitrary message', (error, resp) => { });
+        assert.equal(this.post.firstCall.args[1].json.documents[0].id, '1');
+    } )
 })
