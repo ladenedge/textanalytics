@@ -1,6 +1,6 @@
 {
   "name": "textanalytics",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Node module to handle the client side of Microsoft's Text Analytics API.",
   "main": "index.js",
   "author": {
