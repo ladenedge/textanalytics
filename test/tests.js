@@ -159,10 +159,13 @@ describe('analyze', function () {
         });
     });
 
+
+
     it('should pass the configured url to request', function () {
         textanalytics.analyze('Arbitrary message', (error, resp) => { });
-        assert.equal(this.post.firstCall.args[0], 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment')
-
+        assert.equal(this.post.firstCall.args[0], 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment');
+        assert.equal(this.post.secondCall.args[0], 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyPhrases');
+        assert.equal(this.post.thirdCall.args[0], 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/languages')
     });
 
     it('should pass the input string as JSON', function () {
@@ -184,5 +187,6 @@ describe('analyze', function () {
     it('should send ID of input text', function () {
         textanalytics.analyze('Arbitrary message', (error, resp) => { });
         assert.equal(this.post.firstCall.args[1].json.documents[0].id, '1');
-    } )
+    });
+
 })

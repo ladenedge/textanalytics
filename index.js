@@ -109,7 +109,7 @@ class TextAnalytics {
  * @param {object} options specifications for http request
  * @param {function} callback A response handler to be called when the function completes.
  */
-var multiRequest = function (endpoint, options, callback) {
+ var multiRequest = function (endpoint, options, callback) {
     var endpoints =
         ['sentiment',
         'keyPhrases',
