@@ -28,13 +28,12 @@ class TextAnalytics {
             throw new Error('Configuration data must be a javascript object');
         }
 
-
         if (!config.hasOwnProperty('apikey')) {
             throw new Error('Configuration missing "apikey" property');
         }
 
-        if (config.apikey === null || config.apikey === '') {
-            throw new Error('Apikey property is null or empty');
+        if (config.apikey === null) {
+            throw new Error('Apikey property is null');
         }
 
         config.apikey = config.apikey.trim();
@@ -104,6 +103,12 @@ class TextAnalytics {
     }
 }
 
+/**
+ * Helper function to handle asynchronous http requests
+ * @param {string} endpoint base url endpoint
+ * @param {object} options specifications for http request
+ * @param {function} callback A response handler to be called when the function completes.
+ */
 var multiRequest = function (endpoint, options, callback) {
     var endpoints =
         ['sentiment',
