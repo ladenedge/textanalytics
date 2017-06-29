@@ -110,10 +110,10 @@ class TextAnalytics {
  * @param {function} callback A response handler to be called when the function completes.
  */
  var multiRequest = function (endpoint, options, callback) {
-    var endpoints =
-        ['sentiment',
-        'keyPhrases',
-            'languages'];
+     var endpoints =
+         ['sentiment',
+          'keyPhrases',
+          'languages'];
     async.map(endpoints, (end, finished) => {
         request.post(`${endpoint}/${end}`, options, (error, resp, body) => {
 
